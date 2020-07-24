@@ -1,0 +1,4 @@
+Yongming is a Ph.D. student at the Department of ECE of the University of Virginia.
+His main research interests inlcude autonomous systems, robotics, machine learning and control theory.
+With participation in several robotic projects of surgical robots, mobile robots and drones, he has worked on the topics of
+teleoperation, simulation, safety, perception and autonomy.

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- StyleSheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- <link rel="stylesheet" href="static/css/products.css"> -->
+    <!-- Font Awesome -->
+    <link href="static/css/all.css" rel="stylesheet">
+
+
+
+    <title>Synthetic Data</title>
+  </head>
+  <body>
+   <main>
+       
+<section id = "title">
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="index.html">Home</a>
+        <a href="#What">Synthetic Data</a>
+        <a href="#why">Why to use synthetic data?</a>
+        <a href="#GenerationProcess">Generation Process</a>
+        <a href="#Training">Training</a>
+        <a href="contactus.html">Contact Us</a>
+      </div>
+      <!-- Use any element to open the sidenav -->
+      <button class = "btn btn-dark"><a onclick="openNav()">OpenNavigation</a></button>
+      <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+    <div id="main">
+        <section id = "What">
+            <div class = "container">
+            <h1>What is synthetic data?</h1>
+            <p>Synthetic data is a replacement or support for real world data. For a given scene and camera
+            location, an RGB image is generated along with corresponding object data, depth image, and
+            segmentation images (class segmentation and instance segmentation).</p>
+            <div class = "row">
+                <div class = "col-md-6">
+                    <img class="custom_image" src ="static/Images/000130.png">
+                </div>
+                <div class = "col-md-6">
+                    <img class="custom_image" src="static/Images/000130.depth.png">
+                </div>
+                <div class = "col-md-6">
+                    <img class="custom_image" src="static/Images/000130.seg.png">
+                </div>
+            </div>
+        </div>
+        
+        </section>
+        <section id = "why">
+            <h1>Why use Synthetic Data instead of human-annotated data?</h1>
+            <p>Synthetic data is useful because it can be generated very quickly. In our testing, we
+                generated 60,000 720p RGB images with corresponding object data, depth, and segmentation
+                images in 1 hour (depends on hardware speed). Synthetic data also allows us to produce a
+                much greater level of randomness. In human collected and annotated data, there can be a
+                certain level of bias involved. This can lead to learning the incorrect things during training, and
+                therefore produce inconsistent results at runtime. Generating synthetic data can solve this
+                problem by producing a large amount of randomness so it would be impossible to learn anything
+                other than what is desired.However, often the environment does play a role in
+                identifying objects sometimes. This is why real world data or photorealistic data has shown to be
+                a good supplement to Domain Randomized Data.</p>
+            <a href = "https://arxiv.org/pdf/1809.10790.pdf">Reference</a>
+                
+        </section>
+        <section id = "GenerationProcess">
+            <h1>Synthetic Data Generation Process: </h1>
+            <ol>
+                <li>*Epilepsy Warning*</li>
+                <li>When you run the program the first thing that will happen is a file dialogue will pop up.
+                    Please find and select the FBX object file you’d like to use.</li>
+                <li>Input object to train for</li>
+                <ol type="a">
+                    <li>Must be in FBX file format. You can perform a simple conversion from most 3D
+                        file formats to FBX with the free tool Blender like so:</li>
+                    <ol type="i">
+                        <li>Open Blender</li>
+                        <li>Dismiss welcome message</li>
+                        <li>Press "a" then "delete" to delete everything in the scene</li>
+                        <li>In the top left, select file>Import>"select your file type". Then import your object</li>
+                        <li>If necessary, once imported, switch from "Object mode to "Edit Mode", then press "x" and select "Limited dissolve". This will decrease the amount of faces and vertices.</li>
+                        
+                        <li>On the right in the Scene tab, select Scene properties and change the
+                            Units > Length to centimeters</li>
+                        <li>In the top left select File > Export > FBX</li>
+                        <li>On the right change Path Mode to Copy</li>
+                        <li>Export to desired location</li>
+                    </ol>
+                    <li>FBX file vertex locations must be in centimeters, and no two vertices are allowed
+                        to be within 0.002mm</li>
+                </ol>
+                <li>Wait until you see Ready to begin capturing frames appear in the top right.</li>
+                <li>Enter the amount of images you would like to capture into the box on the right (under the
+                    open button)</li>
+                <li>Press Start when you’re ready.</li>
+                <li>Data is saved in the CapturedData subdirectory. If you generate data multiple times,
+                    then multiple subdirectories will be placed in this directory with the timestamp that the
+                    data-generation began.</li>
+            </ol>
+        </section>
+        <section id = "Training">
+            <h1>Training:</h1>
+            <p>After the data is generated, you can use it for whatever you would like. However, this data is
+                originally designed to train NVIDIA’s DOPE network. This data can also be used for object
+                recognition or something like GraspNet.</p>
+            <h3>To Train DOPE:</h3>
+            <ol>
+                <li>At least one NVIDIA GPU required, but several high-end NVIDIA GPUs is highly
+                    recommended</li>
+                <li>Download DOPE repository</li>
+                <li>Download Python3, PyTorch, and opencv-python (using pip or anaconda)</li>
+                <li>Run training script with parameters to your specifications</li>
+                <ol type="a">
+                    <li>data argument is the relative or absolute path to the dataset</li>
+                    <li>object argument is the name of the class of object to train for (located in every
+                        generated json file)</li>
+                    <li>outf argument is the folder to write results to</li>
+                    <li>batchsize argument is the amount of data to load onto the GPU(s).</li>
+                    <li>gpuids argument is to specify which gpus to use. For best results, list all on
+                        machine</li>
+                    <li>workers argument is the amount of helper threads to spawn. For best results,
+                        set this to the amount of physical cores you have (not virtual cores, if your cpu
+                        uses hyperthreading)</li>
+                    <li>Example: python3 train.py --data ../../hammer_data --object hammer --outf
+                        output/trained_hammer_models --gpuids 0 1 2 3 4 5 --workers 12</li>
+                </ol>
+            </ol>
+        </section>
+    </div>  
+
+   </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+      <!-- Import our custom JavaScript -->
+  <script src="static/js/app.js"></script>
+  <script defer src="static/js/all.js"></script>
+    
+  </body>
+</html>

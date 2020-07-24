@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- StyleSheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- <link rel="stylesheet" href="static/css/products.css"> -->
+    <!-- Font Awesome -->
+    <link href="static/css/all.css" rel="stylesheet">
+
+
+    <title>Contact Us</title>
+  </head>
+  <body>
+   <main>
+       
+  
+<section id = "title">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+      <div class="container">
+        <a class="navbar-brand" href="#">3DAI</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+        </div>
+      
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="contactus.html">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      </nav>
+    </section>
+
+    <!-- Add your forms here -->
+
+    <section>
+        <div class = "container">
+            <div class = "row">
+                <div class="col">
+                    <i class="fa fa-envelope fa-5x customize_control" aria-hidden="true"></i>
+                    <h3 class="get_center">Talk to us</h3>
+                    <h6 class="get_center">We'd love to know how we can work together</h6> 
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Here is the form -->
+<div class= "container">
+    <form action="/contact-us" method = "POST" enctype="multipart/form-data">
+
+        <div class = "form-group">
+            <label for = "FirstName">First Name</label>
+            <input type="text" name = "First Name" class="form-control" id = "FirstName" placeholder = "Enter First Name">
+        </div>
+        <div class="form-group">
+            <label for="LastName">Last Name</label>
+            <input type="text" name="Last Name" class="form-control" id="LastName" placeholder="Enter Last Name">
+        </div>
+        <h5>Which products are you interested in?</h5>
+      <div class="form-check">
+        <input type="checkbox" name="Prod1" class="form-check-input" id="Prod1">
+        <label class="form-check-label" for="Prod1">Product 1</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" name="Prod2" class="form-check-input" id="Prod2">
+        <label class="form-check-label" for="Prod2">Product 2</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" name = "Prod3" class="form-check-input" id="Prod3">
+        <label class="form-check-label" for="Prod3">Product 3</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" name ="Prod4" class="form-check-input" id="Prod4">
+        <label class="form-check-label" for="Prod4">Product 4</label>
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="Emailaddress">Email address</label>
+        <input type="email" class="form-control" id="Emailaddress" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div class="form-group green-border-focus">
+        <label for="TextArea">Comments</label>
+        <textarea class="form-control" id="TextArea" rows="3"></textarea>
+      </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+
+    
+   </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+      <!-- Import our custom JavaScript -->
+  <script src="static/js/app.js"></script>
+  <script defer src="static/js/all.js"></script>
+    
+  </body>
+</html>

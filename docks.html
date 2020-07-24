@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- StyleSheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- <link rel="stylesheet" href="static/css/products.css"> -->
+    <!-- Font Awesome -->
+    <link href="static/css/all.css" rel="stylesheet">
+
+
+    <title>3D Overlay on 2D Image</title>
+  </head>
+  <body>
+   <main>
+       
+<section id = "title">
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="index.html">Home</a>
+        <a href="#Graspnet">Graspnet</a>
+        <a href="#AAE">AAE</a>
+        <a href="#ssd">SSD</a>
+        <a href="#dope">DOPE</a>
+        <a href="#Detectron2">Detectron2</a>
+        <a href="contactus.html">Contact Us</a>
+      </div>
+</section>
+<section id = "">
+    <section id = "main">                            
+    <section id = "Graspnet">
+        <h2>Docker Graspnet</h2>
+        <ul>
+            <li>Install docker and nvidia docker on the host computer</li>
+            <li>Run xhost +local:root on the host computer to enable using GUI with docker.
+                <a href = "http://wiki.ros.org/docker/Tutorials/GUI">Tutorial</a></li>
+            <li>docker pull registry.gitlab.com/haiandaidi/docker_graspnet:2020_07_03_ros</li>
+            <li>git pull https://gitlab.com/haiandaidi/docker_graspnet.git</li>
+            <li>docker run --gpus all -it --network=host --env="DISPLAY" -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $PWD/graspnet_ws:/graspnet_ws:rw -w /graspnet_ws registry.gitlab.com/haiandaidi/docker_graspnet:2020_07_03_ro</li>
+            <li>To run the demo:
+                cd /graspnet_ws/src/graspnet/pytorch_6dof-graspnet
+                python3 -m demo.main</li>
+            <li>Per default, the demo script runs the GAN sampler with sampling based refinement. To use the VAE sampler and/or gradient refinement run:
+                python3 -m demo.main --grasp_sampler_folder checkpoints/vae_pretrained/ --refinement_method gradient</li>
+            <li>The input data is in the folder of demo/data/
+                Closing the opened window will let the algorithm go to process next input.
+                To check the generated grasp information, read demo/main.py</li>
+        </ul>
+        <h4>ROS Wrapper</h2>
+        <ul>
+            <li>cd /graspnet_ws</li>
+            <li>catkin_make</li>
+            <li>source devel/setup.bash</li>
+            <li>rosrun graspnet generate_grasp_poses.py</li>
+            <li>input topic: 'object_pc', PointCloud2 
+                This is pointcloud of the object to be grasped.</li>
+            <li>output topic: 'generated_grasp_posearray', PoseArray 
+                This include all the generated grasp poses.</li>
+        </ul>
+        <p>These parameters can be changed in script_dev/generate_grasp_poses.py</p>
+    <section id = "AAE">
+        <hr>
+        <h2>Docker AAE</h2>
+        <hr>
+    </section>
+    <section id = "ssd">
+        <h2>Docker SSD</h2>
+        <p>A docker image for SSD object detection training. 
+            The original source:<a href = "https://github.com/naisy/train_ssd_mobilenet">Here</a> 
+            It is recommended to read the orginal instruction. But the installation of files and setup are already done in the docker image.</p>
+        <h4>Set up</h4>
+        <ul>
+            <li>git clone <a href = "https://gitlab.com/haiandaidi/docker_ssd.git">https://gitlab.com/haiandaidi/docker_ssd.git</a> && cd github</li>
+            <li>docker login registry.gitlab.com</li>
+            <li>docker pull registry.gitlab.com/haiandaidi/docker_ssd:2020_07_11</li>
+            <li>docker run --gpus all -it -v $PWD/github:/github:rw -w /github --network=host registry.gitlab.com/haiandaidi/docker_ssd:2020_07_11</li>
+            <li>cd train_ssd_mobileneet</li>
+        </ul>
+        <h4>Preparing of the training data</h4>
+        <p>The training data needs to be in voc format</p>
+        <div class = "code">
+            <p>#Folders</p>
+            <p>windex_data_voc_format</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;Annotations # annotations</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;JPEGImages # images</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;xxx_label.pbtxt # label id information</p>
+        </div>
+        <ul>
+            <li>change config.ym</li>
+            <li>change ssd_mobilenet_v1_xxx.config</li>
+            <li>python build1_trainval.py</li>
+            <li>python build2_tf_record.py</li>
+            <li>If erros of existing folder occurs, just delete those folders by rm -rf xxx/xxx</li>
+        </ul>
+        <h4>Training</h4>
+        <p>Choose the corresponding config file and run
+            python /github/models/research/object_detection/model_main.py --alsologtostderr -model_dir=./train --pipeline_config_path=./ssd_mobilenet_v1_tello.config 
+            monitoring: tensorboard --logdir=train</p>
+        <p>If could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR is encoutered, possibly the GPU is out of memory. Try to reduce the batch size.</p>
+        <h4>Freeze Graph</h4>
+        <p>Choose the corresponding config file and run</p>
+        <div class = "code">
+            <pre>
+            <code>python /github/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path=./ssd_mobilenet_v1_tello.config --trained_checkpoint_prefix ./train/model.ckpt-6513 --output_directory ./output \
+                --config_override " \
+                     model{ \
+                       ssd { \
+                         post_processing { \
+                           batch_non_max_suppression { \
+                             score_threshold: 0.5 \
+                           } \
+                         } \
+                       } \
+                     }"
+            </code>
+        </pre>
+        </div>
+    </section>
+    <section id = "dope">
+        <hr>
+        <h2>Docker Dope</h2>
+        <hr>
+        <p>A docker image of the deep object pose estimation(DOPE) method. The code, docker image and instructions are adapted from <a href = "https://github.com/NVlabs/Deep_Object_Pose">https://github.com/NVlabs/Deep_Object_Pose</a></p>
+        <h4>Start your camera node on the local machine</h4>
+        <p>The command depends on what camera you are using.
+            For example, roslaunch zed_wrapper zedm.launch.</p>
+        <p>The camera must publish a correct camera_info topic to enable DOPE to compute the correct poses.
+            Basically all ROS drivers have a camera_info_url parameter
+            where you can set the calibration info (but most ROS drivers include a reasonable default).</p>
+        <h4>Run the docker image</h4>
+        <hr>
+        <p>docker pull registry.gitlab.com/haiandaidi/docker_dope:2020_05_26
+            Download <a href = "https://drive.google.com/drive/folders/1DfoA3m_Bm0fW8tOWXGVxi4ETlLEAgmcg">the weights</a> and save them to a weights folder.</p>
+        <pre>
+            <code>
+                docker run --gpus all -it --privileged --network=host -v $PWD/weights:/root/catkin_ws/src/dope/weights:rw  -v /tmp/.X11-unix:/tmp/.X11-unix:rw --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" registry.gitlab.com/haiandaidi/docker_dope:2020_05_26 /bin/bash
+            </code>
+        </pre>
+        <p>Go to catkin_ws.</p>
+        <p>source devel/setup.bash</p>
+        <h4>Edit config info in ~/catkin_ws/src/dope/config/config_pose.yaml</h4>
+        <hr>
+        <ul>
+            <li>topic_camera: RGB topic to listen to</li>
+            <li>topic_camera_info: camera info topic to listen to</li>
+            <li>topic_publishing: topic namespace for publishing</li>
+            <li>input_is_rectified: Whether the input images are rectified. It is strongly suggested to use a rectified input topic.</li>
+            <li>downscale_height: If the input image is larger than this, scale it down to this pixel height. Very large input images eat up all the GPU memory and slow down inference. Also, DOPE works best when the object size (in pixels) has appeared in the training data (which is downscaled to 400 px). For these reasons, downscaling large input images to something reasonable (e.g., 400-500 px) improves memory consumption, inference speed and recognition results.</li>
+            <li>weights: dictionary of object names and there weights path name, comment out any line to disable detection/estimation of that object</li>
+            <li>dimensions: dictionary of dimensions for the objects  (key values must match the weights names)</li>
+            <li>class_ids: dictionary of class ids to be used in the messages published on the /dope/detected_objects topic (key values must match the weights names)</li>
+            <li>draw_colors: dictionary of object colors (key values must match the weights names)</li>
+            <li>model_transforms: dictionary of transforms that are applied to the pose before publishing (key values must match the weights names)</li>
+            <li>meshes: dictionary of mesh filenames for visualization (key values must match the weights names)</li>
+            <li>mesh_scales: dictionary of scaling factors for the visualization meshes (key values must match the weights names)</li>
+            <li>thresh_angle: undocumented</li>
+            <li>thresh_map: undocumented</li>
+            <li>sigma: undocumented</li>
+            <li>thresh_points: Thresholding the confidence for object detection; increase this value if you see too many false positives, reduce it if  objects are not detected.</li>
+        </ul>
+            <h4>Start DOPE Node</h4>
+            <hr>
+            <p>roslaunch dope dope.launch [config:=/path/to/my_config.yaml]
+                Config file is optional; default is config_pose.yaml</p>
+            <h4>Debugging</h4>
+            <hr>
+            <ul>
+            <li>The following ROS topics are published (assuming topic_publishing == 'dope'):
+                <pre>
+                    <code>
+                        /dope/webcam_rgb_raw       # RGB images from camera
+                        /dope/dimension_[obj_name] # dimensions of object
+                        /dope/pose_[obj_name]      # timestamped pose of object
+                        /dope/rgb_points           # RGB images with detected cuboids overlaid
+                        /dope/detected_objects     # vision_msgs/Detection3DArray of all detected objects
+                        /dope/markers              # RViz visualization markers for all objects  
+                    </code>
+                </pre>
+            </li>
+            <p>Note: [obj_name] is in {cracker, gelatin, meat, mustard, soup, sugar}</p>
+            <li>To debug in RViz, run rviz, then add one or more of the following displays:</li>
+            <ul>
+                <li><code>Add > Image</code> to view the raw RGB image or the image with cuboids overlaid</li>
+                <li><code>Add > Pose</code> to view the object coordinate frame in 3D.</li>
+                <li><code>Add > MarkerArray</code> to view the cuboids, meshes etc. in 3D.</li>
+                <li><code>Add > Camera</code> to view the RGB Image with the poses and markers from above.</li>
+            </ul>
+            <p>If you do not have a coordinate frame set up, you can run this static transformation: <code>rosrun tf2_ros static_transform_publisher 0 0 0 0.7071 0 0 -0.7071 world &lt;camera_frame_id&gt;</code>, where <code>&lt;camera_frame_id&gt;</code> is the <code>frame_id</code> of your input camera messages.  Make sure that in RViz's <code>Global Options</code>, the <code>Fixed Frame</code> is set to <code>>world.</code> Alternatively, you can skip the <code>static_transform_publisher</code> step and directly set the <code>Fixed Frame</code> to your <code>&lt;camera_frame_id&gt;</code>.</p>
+            <li>If <code>rosrun</code> does not find the package <code>([rospack] Error: package 'dope' not found)</code>, be sure that you called <code>source devel/setup.bash</code> as mentioned above.  To find the package, run <code>rospack find dope.</code></li>
+            </ul>
+    </section>
+    <section id= "Detectron2">
+        <h2>Docker Detectron2</h2>
+        <p>A docker image with the detectron2 code.</p>
+        <h4>Camera</h4>
+        <br>
+        <p>Start your camera driver.
+            Change the image topic in detectron2_ros.launch file to your topic.</p>
+        <h4>detectron2</h4>
+        <hr>
+        <p>In this folder:<code>docker run --gpus all -it --rm --net host --env="DISPLAY" -v /tmp/.X11-unix:/tmp/.X11-unix:rw --mount type=bind,source=$PWD,target=/detectron2 -w /detectron2 registry.gitlab.com/haiandaidi/docker_detectron2:2020_05_16</code></p>
+        <p><code>cd catkin_ws</code></p>
+        <p><code>source /opt/ros/melodic/setup.bash</code></p>
+        <p><code>catkin_make</code></p>
+        <p><code>source devel/setup.bash</code></p>
+        <p><code>roslaunch detectron2_ros detectron2_ros.launch</code></p>
+        <h4>Synchronizer</h4>
+        <hr>
+        <p><code>roslaunch detectron2_sync detectron2_sync.launch</code></p>
+    </section>
+</section>
+</section>
+
+   </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+      <!-- Import our custom JavaScript -->
+  <script src="static/js/app.js"></script>
+  <script defer src="static/js/all.js"></script>
+    
+  </body>
+</html>

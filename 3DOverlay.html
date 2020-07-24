@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- StyleSheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- <link rel="stylesheet" href="/static/css/products.css"> -->
+    <!-- Font Awesome -->
+    <link href="/static/css/all.css" rel="stylesheet">
+
+
+    <title>3D Overlay on 2D Image</title>
+  </head>
+  <body>
+   <main>
+       
+<section id = "title">
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="index.html">Home</a>
+        <a href="#Installation">Download and Install</a>
+        <a href="#AfterInstallation">After Installation</a>
+        <a href="#AddNewImages">New Images</a>
+        <a href="#CADFiles">New CAD Models</a>
+        <a href="#Start">Start Annotating</a>
+        <a href="#Store">Store Output</a>
+        <a href="contactus.html">Contact Us</a>
+      </div>
+</section>
+<section id = "Overlay">
+    <section id = "main">         
+                         
+    <section id = "Installation">
+        <h1>What does this tool do for you?</h1>
+        <p>Below is a simple demonstration for the tool. As you see, one can overlay a 3D cad model on the 2d image by simply clicking on the buttons as shown below.</p>
+        <p>The output image can be further used to train neural networks as well.</p>
+        <div class = "video_parent">
+        <div class = "video_child">
+            <video width = "50%" height = "30%"
+            src = "static/Images/zoom_0.mp4" controls>    
+        </div>
+    </div>
+        <h2>Downloading and installing</h2>
+        <ol>
+            <li><h5>Download the tool from <a href = "/return-files/">here</a></h1></li>
+            <img class = "img_3D" src = "static/Images/Install.png">
+            <li><h5>Click on the application and you will see the window as follows:</p></li>
+            <img class = "img_3D" src = "static/Images/Install2.png">
+            <li><h5>Add your installation path</p></li>
+            <img class = "img_3D" src = "static/Images/Install3.png">
+    </section>
+    <section id = "AfterInstallation">
+        <h2>After Installation</h2>
+        <ol>
+        <li><h5>Once installed, open the application and you would something as below: </p></li>
+            <img class="img_3D" src = "static/Images/Openapp.png">
+            <li>Download the root directory from <a href = "/return-root/">here</a> and copy paste it in any location in your computer</li>
+            <li>The root directory will look like this: </li>
+            <img class = "img_3D" src ="static/Images/Root.png">
+        </ol>
+    </section>
+    <section id = "AddNewImages">
+        <h2>New Images</h2>
+        <ol>
+        <li>Add images and do the corresponding annotation for that. To do that click on add images and get annotation.</li>
+            <img class = "img_3D" src = "static/Images/AddImages.png">
+            <li>You will be asked to add image directory</li>
+            <li>Go ahead and add your image directory</li>
+            <img class = "img_3D" src = "static/Images/AddImages2.png">
+            <li>Once done, add annotation directory where you wish to store the annotations. Add the number of objects for each of the images.</li>
+            <img class = "img_3D" src = "static/Images/AddImages3.png">
+            <li>For every object, enter the class of the object</li>
+            <img class = "img_3D" src = "static/Images/AddImages4.png">
+        </ol>
+
+    </section>
+    <section id = "CADFiles">
+        <h1>New CAD models</h1>
+        <ol>
+            <li>Click on add new Cad Models</li>
+            <img class = "img_3D" src = "static/Images/AddRootCAD.png">
+            <li>Add Root Obj Files</li>
+            <img class = "img_3D" src = "static/Images/AddRootObj.png">
+            <li>Enter the folder where you want to store the new CAD file</li>
+            <img class = "img_3D" src = "static/Images/AddFolderToStoreCAD.png">
+            
+        </ol>
+    </section>
+    <section id= "Start">
+        <h2>Start Annotating</h2>
+        <ol>
+            <li>Click on call annotate pose.m and add annotation, the image and the cad directory from the root</li>
+        </ol> 
+    </section>
+    <section id= "Store">
+        <h2>Store Output</h2>
+        <ol>
+            <li>Click on Store Image annotations to store the output</li>
+            <li>A dialog box will ask for the root directory</li>
+            <img class = "img_3D" src = "static/Images/store1.JPG">
+            <li>Go ahead and add your directory</li>
+            <li>A dialog box will ask for the output directory</li>
+            <img class = "img_3D" src = "static/Images/store2.JPG">
+            <li>Go ahead and add your output directory</li>
+            <li>Once the output directory has been added, go ahead and store your outputs</li>
+            <li>You can view the outputs in the output directory</li>
+        </ol> 
+    </section>
+</section>
+</section>
+
+   </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+      <!-- Import our custom JavaScript -->
+  <script src="static/js/app.js"></script>
+  <script defer src="static/js/all.js"></script>
+    
+  </body>
+</html>
